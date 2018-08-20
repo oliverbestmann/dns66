@@ -366,17 +366,25 @@ class AdVpnThread implements Runnable, DnsPacketProxy.EventLoop {
             Log.i(TAG, "newDNSServer: Ignoring DNS server " + addr);
         } else if (addr instanceof Inet4Address) {
             upstreamDnsServers.add(addr);
+
             String alias = String.format(format, upstreamDnsServers.size() + 1);
             Log.i(TAG, "configure: Adding DNS Server " + addr + " as " + alias);
+
             builder.addDnsServer(alias);
             builder.addRoute(alias, 32);
+            builder.addRoute(addr, 32);
+
             vpnWatchDog.setTarget(InetAddress.getByName(alias));
         } else if (addr instanceof Inet6Address) {
             upstreamDnsServers.add(addr);
+
             ipv6Template[ipv6Template.length - 1] = (byte) (upstreamDnsServers.size() + 1);
             InetAddress i6addr = Inet6Address.getByAddress(ipv6Template);
             Log.i(TAG, "configure: Adding DNS Server " + addr + " as " + i6addr);
             builder.addDnsServer(i6addr);
+            builder.addRoute(i6addr, 128);
+            builder.addRoute(addr, 128);
+
             vpnWatchDog.setTarget(i6addr);
         }
     }

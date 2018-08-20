@@ -37,6 +37,7 @@ import java.net.Inet4Address;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -205,11 +206,16 @@ public class DnsPacketProxy {
      * @return The translated address or null on failure.
      */
     private InetAddress translateDestinationAdress(IpPacket parsedPacket) {
+        byte[] addr = parsedPacket.getHeader().getDstAddr().getAddress();
+        for (InetAddress upstreamDnsServer : upstreamDnsServers) {
+            if (Arrays.equals(addr, upstreamDnsServer.getAddress())) {
+                return upstreamDnsServer;
+            }
+        }
+
         InetAddress destAddr = null;
         if (upstreamDnsServers.size() > 0) {
-            byte[] addr = parsedPacket.getHeader().getDstAddr().getAddress();
             int index = addr[addr.length - 1] - 2;
-
             try {
                 destAddr = upstreamDnsServers.get(index);
             } catch (Exception e) {

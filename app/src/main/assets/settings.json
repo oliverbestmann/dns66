@@ -51,7 +51,7 @@
       },
       {
         "title": "Dan Pollock's hosts file",
-        "location": "http://someonewhocares.org/hosts/hosts",
+        "location": "https://someonewhocares.org/hosts/hosts",
         "state": 0
       },
       {
@@ -82,6 +82,11 @@
       {
         "title": "Peter Lowe’s Ad server list",
         "location": "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=1&mimetype=plaintext",
+        "state": 0
+      },
+      {
+        "title": "Steven Black hosts",
+        "location": "https://github.com/StevenBlack/hosts/raw/master/hosts",
         "state": 0
       }
     ]
